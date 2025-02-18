@@ -19,7 +19,7 @@ public class GitHubWebhookController {
     private final GitHubService gitHubService;
 
     @PostMapping("/")
-    public ResponseEntity<String> handleWebhook(@RequestBody Map<String, Object> payload) throws IOException {
+    public ResponseEntity<String> handleWebhook(@RequestBody Map<String, Object> payload) {
         return gitHubService.processPullRequest(payload);
     }
 }
