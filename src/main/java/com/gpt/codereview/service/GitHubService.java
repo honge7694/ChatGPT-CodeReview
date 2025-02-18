@@ -69,10 +69,8 @@ public class GitHubService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "Bearer " + OPENAI_API_KEY);
         headers.set("Content-Type", "application/json");
-
-//        String requestBody = "{ \"model\": \"gpt-3.5\", \"messages\": [ {\"role\": \"system\", \"content\": \"당신은 Java Spring Boot 코드 리뷰 전문가입니다. 코드를 분석하고 리뷰를 작성하세요. 모든 응답은 반드시 한국어로 작성하세요.\"}, {\"role\": \"user\", \"content\": \"Review this code: " + code + "\"} ] }";
         Map<String, Object> requestBody = Map.of(
-            "model", "gpt-3.5",
+            "model", "gpt-3.5-turbo",
             "messages", List.of(
                 Map.of("role", "system", "content", "당신은 Java Spring Boot 코드 리뷰 전문가입니다. 코드를 분석하고 리뷰를 작성하세요. 모든 응답은 반드시 한국어로 작성하세요."),
                 Map.of("role", "user", "content", "다음 코드를 리뷰해 주세요 : \n```java\n" + code)
