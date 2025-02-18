@@ -70,9 +70,16 @@ public class GitHubService {
         headers.set("Authorization", "Bearer " + OPENAI_API_KEY);
         headers.set("Content-Type", "application/json");
 
-        String requestBody = "{ \"model\": \"gpt-3.5\", \"messages\": [ {\"role\": \"system\", \"content\": \"당신은 Java Spring Boot 코드 리뷰 전문가입니다. 코드를 분석하고 리뷰를 작성하세요. 모든 응답은 반드시 한국어로 작성하세요.\"}, {\"role\": \"user\", \"content\": \"Review this code: " + code + "\"} ] }";
-
-        HttpEntity<String> entity = new HttpEntity<>(requestBody, headers);
+//        String requestBody = "{ \"model\": \"gpt-3.5\", \"messages\": [ {\"role\": \"system\", \"content\": \"당신은 Java Spring Boot 코드 리뷰 전문가입니다. 코드를 분석하고 리뷰를 작성하세요. 모든 응답은 반드시 한국어로 작성하세요.\"}, {\"role\": \"user\", \"content\": \"Review this code: " + code + "\"} ] }";
+        Map<String, Object> requestBody = Map.of(
+            "model", "gpt-3.5",
+            "messages", List.of(
+                Map.of("role", "system", "content", "당신은 Java Spring Boot 코드 리뷰 전문가입니다. 코드를 분석하고 리뷰를 작성하세요. 모든 응답은 반드시 한국어로 작성하세요."),
+                Map.of("role", "user", "content", "다음 코드를 리뷰해 주세요 : \n```java\n" + code)
+            )
+//          , "max_tokens", 500
+        );
+        HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
         ResponseEntity<Map> response = restTemplate.postForEntity("https://api.openai.com/v1/chat/completions", entity, Map.class);
 
         Map<String, Object> responseBody = response.getBody();
