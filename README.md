@@ -27,7 +27,7 @@ ngrok을 사용하여 로컬 서버를 외부(GitHub Webhook)에서도 접속할
 2. ngrok 토큰 생성
 [ngrok 토큰 생성](https://dashboard.ngrok.com/get-started/your-authtoken)에서 토큰을 생성하여 저장합니다.
 
-3. ngrok 토큰 등록
+3. ngrok 토큰 발급
 설치한 파일이 있는 곳으로 이동 후 다음의 명령어를 실행해줍니다.
    - windows
        - `.\ngrok.exe config add-authtoken {토큰번호}`
@@ -52,4 +52,15 @@ Forwarding https://e147-1-220-56-227.ngrok-free.app -> http://localhost:8080
 3. Content type : application/json
 4. Webhook 이벤트 Let me select individual events. → pull request reviews, pull request 선택
 
-### ✅ 3. 프로젝트 실행 후 Pull Request 요청
+### ✅ 3. Github Token 발급
+1. [Github 토큰 발급](https://github.com/settings/personal-access-tokens)에 접속하여 Generate new token 클릭
+2. Repository access에서 Only select repositories로 repository 선택
+3. Repository permissions에서 Read access to metadata, Read and Write access to pull requests and security events 선택
+
+### ✅ 4. OpenAI API 발급
+1. [OpenAI API 발급](https://platform.openai.com/settings/organization/api-keys)에 접속하여 API 발급
+2. [Token 결제](https://platform.openai.com/settings/organization/billing/overview)에서 Token을 결제해야 사용 가능
+
+### ✅ 5. Github Token, OpenAI API 등록 후 프로젝트 실행
+1. 각각의 값을 등록한 후 프로젝트 실행
+2. pull Request 생성 후 확인ssss
