@@ -1,6 +1,5 @@
 package com.gpt.codereview.dto;
 
-import com.gpt.codereview.controller.BoardController;
 import com.gpt.codereview.entity.Board;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

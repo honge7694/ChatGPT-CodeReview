@@ -18,13 +18,15 @@ public class GitHubService {
 
     @Value("${token.openai}")
     private String OPENAI_API_KEY;
-
+    private static final String OPENAI_API_URL = "https://api.openai.com/v1/chat/completions";
     private final RestTemplate restTemplate = new RestTemplate();
 
     /**
-     * pull requests 요청이 발생하면 GITHUB WEBHOOK을 통해 요청을 받음
-     * @param payload
-     * @return
+     * GitHub Webhook을 통해 Pull Request 이벤트를 처리하는 메서드.
+     * <p>GitHub에서 Pull Request(Pull Request Open, Synchronize 등) 이벤트가 발생하면
+     * 해당 Webhook 요청을 받아 수행한다.</p>
+     * @param payload GitHub Webhook에서 전달된 JSON 데이터의 매핑 객체
+     * @return ResponseEntity (예: 성공 시 HTTP 200 OK)
      */
     public ResponseEntity<String> processPullRequest(Map<String, Object> payload) {
         String action = (String) payload.get("action");
@@ -53,6 +55,12 @@ public class GitHubService {
         return  ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).body("Error processing PR");
     }
 
+    /**
+     * Pull Request에서 변경된 파일 목록을 가져온다.
+     * <p><a href="https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests-files">GitHub API - List Pull Request Files</a></p>
+     * @param url Pull Request API URL (예: https://api.github.com/repos/honge7694/ChatGPT-CodeReview/pulls/6/files)
+     * @return 변경된 파일 목록을 포함하는 List (각 파일은 Map<String, Object> 형태)
+     */
     private List<Map<String, Object>> getGitHubData(String url) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "token " + GITHUB_TOKEN);
@@ -75,10 +83,10 @@ public class GitHubService {
                 Map.of("role", "system", "content", "당신은 Java Spring Boot 코드 리뷰 전문가입니다. 코드를 분석하고 리뷰를 작성하세요. 모든 응답은 반드시 한국어로 작성하세요."),
                 Map.of("role", "user", "content", "다음 코드를 리뷰해 주세요 : \n```java\n" + code)
             )
-//          , "max_tokens", 500
+//          , "max_tokens", 500 // 비용 줄이기
         );
         HttpEntity<Map<String, Object>> entity = new HttpEntity<>(requestBody, headers);
-        ResponseEntity<Map> response = restTemplate.postForEntity("https://api.openai.com/v1/chat/completions", entity, Map.class);
+        ResponseEntity<Map> response = restTemplate.postForEntity(OPENAI_API_URL, entity, Map.class);
 
         Map<String, Object> responseBody = response.getBody();
         if (responseBody == null || !responseBody.containsKey("choices")) {
@@ -99,6 +107,12 @@ public class GitHubService {
         return message.getOrDefault("content", "AI 리뷰 결과를 가져오는 데 실패했습니다.").toString();
     }
 
+    /**
+     * Pull Request에서 변경된 코드에 대해 코멘트를 추가한다.
+     * @param prUrl Pull Request API URL (예: https://api.github.com/repos/honge7694/ChatGPT-CodeReview/pulls/6)
+     * @param fileName 변경된 파일의 이름 (예: src/main/java/com/example/App.java)
+     * @param comment AI가 작성한 리뷰
+     */
     private void addReviewComment(String prUrl, String fileName, String comment) {
         String commentsUrl = prUrl + "/comments";
 
@@ -123,6 +137,13 @@ public class GitHubService {
         restTemplate.postForEntity(commentsUrl, entity, String.class);
     }
 
+    /**
+     * 최신 커밋 id를 가져온다.
+     * <p><a href="https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#get-a-pull-request">GitHub API - Get a pull request</a></p>
+     * @param prUrl Pull Request API URL (예: https://api.github.com/repos/honge7694/ChatGPT-CodeReview/pulls/6)
+     * @return 최신 커밋 ID 반환 (예: 6dcb09b5b57875f334f61aebed695e2e4193db5e)
+     * @throws RuntimeException 응답 데이터가 `null`이거나 "head" 키가 존재하지 않을 경우 발생
+     */
     private String getLatestCommitId(String prUrl) {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "token " + GITHUB_TOKEN);
@@ -140,6 +161,14 @@ public class GitHubService {
         return (String) head.get("sha"); // 최신 커밋 ID 반환
     }
 
+    /**
+     * 변경된 파일의 position(변경된 라인의 시작 위치)을 가져온다.
+     * <p><a href="https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests-files">GitHub API - List Pull Request Files</a></p>
+     * @param prUrl Pull Request API URL (예: https://api.github.com/repos/honge7694/ChatGPT-CodeReview/pulls/6)
+     * @param fileName 변경된 파일의 이름 (예: src/main/java/com/example/App.java)
+     * @return 변경된 라인의 시작 위치 (예: 15 → 해당 파일에서 15번째 라인이 변경됨)
+     * @throws RuntimeException 파일 정보를 가져오지 못하거나 변경 위치를 찾을 수 없는 경우 발생
+     */
     private int getFilePosition(String prUrl, String fileName) {
         String filesUrl = prUrl + "/files";
         HttpHeaders headers = new HttpHeaders();
