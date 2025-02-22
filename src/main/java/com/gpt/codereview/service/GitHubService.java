@@ -115,19 +115,19 @@ public class GitHubService {
      */
     private void addReviewComment(String prUrl, String fileName, String comment) {
         String commentsUrl = prUrl + "/comments";
-
         // 최신 commit_id 가져오기
         String latestCommitId = getLatestCommitId(prUrl);
-
         // 변경된 파일의 position 가져오기
         int position = getFilePosition(prUrl, fileName);
 
         Map<String, Object> commentPayload = Map.of(
-            "body", "** AI Review : **\n" + comment,
+            "body", "💡AI Review\n" + comment,
             "path", fileName,
             "commit_id", latestCommitId,
-            "position", position
+            "line", position,
+            "side", "RIGHT"
         );
+        log.info("commentPayload : {}", commentPayload);
 
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "token " + GITHUB_TOKEN);
