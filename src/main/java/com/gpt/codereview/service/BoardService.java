@@ -23,4 +23,13 @@ public class BoardService {
     public BoardResponseDto saveBoard(BoardRequestDto boardRequestDto) {
         return new BoardResponseDto(boardRepository.save(new Board(boardRequestDto)));
     }
+
+    public BoardResponseDto updateBoard(BoardRequestDto boardRequestDto) throws Exception {
+        Board board = boardRepository.getById(boardRequestDto.getId());
+        if (board == null) {
+            throw new Exception("게시글을 찾지 못했습니다.");
+        }
+        board.update(boardRequestDto);
+        return new BoardResponseDto(boardRepository.save(board));
+    }
 }

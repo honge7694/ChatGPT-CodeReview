@@ -31,4 +31,10 @@ public class Board {
         this.content = board.getContent();
         this.author = board.getAuthor();
     }
+
+    public void update(BoardRequestDto boardRequestDto) {
+        this.title = boardRequestDto.getTitle();
+        this.content = boardRequestDto.getContent();
+        this.author = boardRequestDto.getAuthor();
+    }
 }
