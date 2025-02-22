@@ -24,4 +24,9 @@ public class BoardController {
     public BoardResponseDto saveBoard(@RequestBody BoardRequestDto boardRequestDto) {
         return boardService.saveBoard(boardRequestDto);
     }
+
+    @PutMapping("/")
+    public BoardResponseDto updateBoard(@RequestBody BoardRequestDto boardRequestDto) throws Exception {
+        return boardService.updateBoard(boardRequestDto);
+    }
 }
