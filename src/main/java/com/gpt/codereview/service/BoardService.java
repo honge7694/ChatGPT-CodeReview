@@ -25,10 +25,8 @@ public class BoardService {
     }
 
     public BoardResponseDto updateBoard(BoardRequestDto boardRequestDto) throws Exception {
-        Board board = boardRepository.getById(boardRequestDto.getId());
-        if (board == null) {
-            throw new Exception("게시글을 찾지 못했습니다.");
-        }
+        Board board = boardRepository.findById(boardRequestDto.getId())
+                .orElseThrow(() -> new Exception("게시글을 찾지 못했습니다."));
         board.update(boardRequestDto);
         return new BoardResponseDto(boardRepository.save(board));
     }
