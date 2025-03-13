@@ -19,7 +19,7 @@ public class GeminiService {
 
     @Value("${token.gemini}")
     private String GEMINI_API_KEY;
-    private String GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-pro:generateContent";
+    private String GEMINI_API_URL = "https://generativelanguage.googleapis.com/v1beta/models/gemini-1.5-flash:generateContent";
 
     private final RestTemplate restTemplate = new RestTemplate();
 
