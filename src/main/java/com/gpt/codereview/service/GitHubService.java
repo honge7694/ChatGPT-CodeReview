@@ -164,7 +164,7 @@ public class GitHubService {
                             String[] parts = lines[i].split(" ");
                             if (parts.length > 2 && parts[2].startsWith("+")) {
                                 String[] lineNumbers = parts[2].substring(1).split(",");
-                                return Integer.parseInt(lineNumbers[0]);
+                                return Integer.parseInt(lineNumbers[0]) + Integer.parseInt(lineNumbers[1]) - 1;
                             }
                         }
                     }
