@@ -70,6 +70,7 @@ public class GitHubService {
         HttpHeaders headers = new HttpHeaders();
         headers.set("Authorization", "token " + GITHUB_TOKEN);
         headers.set("Accept", "application/json");
+
         HttpEntity<String> entity = new HttpEntity<>(headers);
 
         ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(

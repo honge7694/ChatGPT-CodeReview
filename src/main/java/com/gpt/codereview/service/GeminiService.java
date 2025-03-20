@@ -47,7 +47,7 @@ public class GeminiService {
         Map<String, Object> content = new HashMap<>();
         List<Map<String, Object>> parts = new ArrayList<>();
         Map<String, Object> part = new HashMap<>();
-        part.put("text", "당신은 Java Spring Boot 코드 리뷰 전문가입니다. 코드를 분석하고 다음의 양식에 맞게 리뷰를 작성하세요. 모든 응답은 반드시 한국어로 작성하세요. \n\n" + reviewTemplate() + code);
+        part.put("text", "당신은 코드 리뷰 전문가입니다. 코드를 분석하고 다음의 양식에 맞게 리뷰를 작성하세요. 모든 응답은 반드시 한국어로 작성하세요. \n\n" + reviewTemplate() + code);
         parts.add(part);
         content.put("parts", parts);
         contents.add(content);
@@ -98,7 +98,6 @@ public class GeminiService {
         StringBuilder reviewTemplate = new StringBuilder();
         reviewTemplate.append("# 📢 PR 리뷰 요약\n\n")
                 .append("## 1️⃣ PR 개요\n")
-                .append("- **제목:** [PR 제목]\n")
                 .append("- **기능:** [어떤 기능/버그 수정인지 간략히 설명]\n")
                 .append("- **주요 변경 사항:**\n")
                 .append("  - [주요 코드 수정 내용 (ex. 함수 추가, 로직 변경, 리팩토링 등)]\n")
@@ -124,7 +123,9 @@ public class GeminiService {
                 .append("- [수정 후 다시 리뷰 요청할지 여부]\n\n")
 
                 .append("✅ **최종 결론**:\n")
-                .append("- [🔹 LGTM (Looks Good To Me) / ⏳ Needs Changes / ❌ Request Changes]\n");
+                .append("- [🔹 LGTM (Looks Good To Me) / ⏳ Needs Changes / ❌ Request Changes]\n")
+
+                .append("되도록이면 동작확인에 대한 리뷰는 제외하고 코드 품질, 개선 사항 등 위의 양식 위주로 진행합니다.");
         return reviewTemplate;
     }
 }
