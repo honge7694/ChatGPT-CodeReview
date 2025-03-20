@@ -10,6 +10,7 @@ import org.springframework.web.client.RestTemplate;
 
 import java.util.List;
 import java.util.Map;
+import java.util.stream.Collectors;
 
 @Slf4j
 @Service
@@ -62,7 +63,7 @@ public class GitHubService {
     /**
      * Pull Request에서 변경된 파일 목록을 가져온다.
      * <p><a href="https://docs.github.com/en/rest/pulls/pulls?apiVersion=2022-11-28#list-pull-requests-files">GitHub API - List Pull Request Files</a></p>
-     * @param url Pull Request API URL (예: https://api.github.com/repos/honge7694/ChatGPT-CodeReview/pulls/6/files)
+     * @param url Pull Request API URL (예: c)
      * @return 변경된 파일 목록을 포함하는 List (각 파일은 Map<String, Object> 형태)
      */
     private List<Map<String, Object>> getGitHubData(String url) {
@@ -74,7 +75,9 @@ public class GitHubService {
         ResponseEntity<List<Map<String, Object>>> response = restTemplate.exchange(
                 url, HttpMethod.GET, entity, new ParameterizedTypeReference<List<Map<String, Object>>>() {}
         );
-        return response.getBody();
+        return response.getBody().stream()
+                .filter(file -> !"removed".equals(file.get("status")))
+                .collect(Collectors.toList());
     }
 
     /**
