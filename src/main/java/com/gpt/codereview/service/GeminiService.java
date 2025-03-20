@@ -100,7 +100,6 @@ public class GeminiService {
                 .append("## 1️⃣ PR 개요\n")
                 .append("- **제목:** [PR 제목]\n")
                 .append("- **기능:** [어떤 기능/버그 수정인지 간략히 설명]\n")
-                .append("- **변경 파일 수:** [변경된 파일 개수]\n")
                 .append("- **주요 변경 사항:**\n")
                 .append("  - [주요 코드 수정 내용 (ex. 함수 추가, 로직 변경, 리팩토링 등)]\n")
                 .append("  - [중요한 아키텍처 변경사항이 있다면 설명]\n\n")
@@ -119,7 +118,6 @@ public class GeminiService {
                 .append("💡 **제안하는 개선 사항**:\n")
                 .append("- [더 나은 코드 구조/설계 제안]\n")
                 .append("- [리팩토링 제안]\n")
-                .append("- [테스트 코드 보강 필요 여부]\n\n")
 
                 .append("📌 **요청 사항**:\n")
                 .append("- [추가 확인이 필요한 부분 (ex. 문서화, 주석 추가 등)]\n")
