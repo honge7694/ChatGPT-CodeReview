@@ -62,7 +62,8 @@ Forwarding https://e147-1-220-56-227.ngrok-free.app -> http://localhost:8080
 2. [Token 결제](https://platform.openai.com/settings/organization/billing/overview)에서 Token을 결제해야 사용 가능
 
 ### ✅ 5. Github Token, OpenAI API 등록 후 프로젝트 실행
-1. 각각의 값을 등록한 후 프로젝트 실행
-2. pull Request 생성 후 확인
-
-TEST
+1. 각각의 값을 application-token.yml을 생선한 후 등록하여 프로젝트 실행
+2. 다른 프로젝트에서 코드리뷰를 받기 위해서는 해당 프로젝트의 서버는 항상 실행 
+   1. 다른 프로젝트의 Webhook 주소를 이 프로젝트 Webhook 주소로 등록 ex) https://4555-1-220-56-227.ngrok-free.app/api/webhook/
+   2. 3. Github Token에서 프로젝트 select 등록
+3. pull Request 생성 후 확인
