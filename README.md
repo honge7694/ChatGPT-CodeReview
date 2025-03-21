@@ -8,8 +8,8 @@ GitHub Webhook과 OpenAI(ChatGPT)를 활용하여 자동 코드 리뷰를 수행
 ### 동작 확인
 1. Pull requests를 요청
 2. GitHub Webhooks가 변경 사항 감지
-3. ChatGPT가 변경 사항을 분석하고 리뷰 생성
-4. Git Pull requests에 등록된 리뷰 확인
+3. Webhooks의 이벤트를 받으면 ChatGPT/GeminiAI가 변경 사항을 분석하고 리뷰 등록
+4. Git Repository의 Pull requests에 자동 등록된 리뷰 확인
 
 ### 주요 기술 스택
 
