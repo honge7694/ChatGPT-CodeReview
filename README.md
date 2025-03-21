@@ -3,7 +3,7 @@ GitHub Webhook과 OpenAI(ChatGPT)를 활용하여 자동 코드 리뷰를 수행
 
 ## 프로젝트 개요
 
-![image](https://github.com/user-attachments/assets/91076b93-2c56-4092-b6ac-066a9ee66fba)
+![image](https://github.com/user-attachments/assets/3f18d8a4-26d6-4f58-b34b-385472a5d49c)
 
 ### 동작 확인
 1. Pull requests를 요청
