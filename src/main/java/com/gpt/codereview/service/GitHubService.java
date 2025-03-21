@@ -95,7 +95,7 @@ public class GitHubService {
         int position = getFilePosition(prUrl, fileName);
 
         Map<String, Object> commentPayload = Map.of(
-            "body", "💡AI Review\n" + comment,
+            "body", comment,
             "path", fileName,
             "commit_id", latestCommitId,
             "line", position,
